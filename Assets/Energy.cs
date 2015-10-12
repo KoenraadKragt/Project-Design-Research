@@ -5,36 +5,54 @@ public class Energy : MonoBehaviour {
 
     public Light lightSuit;
     public float rangeDecrease = 0.5f;
+    public float energy;
+    public float modifier = 1.0f;
     
-
-    // Use this for initialization
     void Start () {
-	
+        //lightSuit.color = Color.blue;
+        energy = 100;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
-
-        float movement = new Vector2 (GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y * 0.3f).magnitude;
-
-
-        if (lightSuit != null)
+        if (lightSuit == null)
         {
+            return;
+        } else { 
+
+            float movement = new Vector2 (GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y * 0.3f).magnitude;
+
             if (movement > 0.1)
             {
-                if (lightSuit.intensity < 1.2f)
-                {
-                    lightSuit.intensity += 0.1f * movement * Time.deltaTime;
-                }
-                lightSuit.range += 0.1f * movement * Time.deltaTime;
+                energy += Time.deltaTime * movement * modifier;
+            } else { 
+                energy -= Time.deltaTime * rangeDecrease * modifier;
             }
-            if (lightSuit.intensity > 0.3f)
+
+
+            lightSuit.intensity = energy / 100;
+            lightSuit.range = energy/10;
+            //lightSuit.color = Color.Lerp(Color.red, Color.blue, energy / 100);
+
+
+            //min and max light intensity
+            if (lightSuit.intensity > 1.2f )
             {
-                lightSuit.intensity -= rangeDecrease * Time.deltaTime;
+                lightSuit.intensity = 1.2f;
+            } else if (lightSuit.intensity < 0.3f)
+            {
+                lightSuit.intensity = 0.3f;
             }
-            lightSuit.range -= rangeDecrease * Time.deltaTime;
+
+            //min and max energy
+            if (energy < 0)
+            {
+                energy = 0;
+            } else if(energy > 100)
+            {
+                energy = 100;
+            }
+
         }
-        
     }
 }
