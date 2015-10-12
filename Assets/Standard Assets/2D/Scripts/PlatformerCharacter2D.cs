@@ -20,7 +20,9 @@ namespace UnityStandardAssets._2D
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
-        const float k_WallRadius = .1f;
+
+        private bool doubleJump;
+        const float k_WallRadius = .0001f;
         private Transform m_WallCheck;
 
         private void Awake()
@@ -96,15 +98,28 @@ namespace UnityStandardAssets._2D
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
+            }
+
+            if (jump && doubleJump)
+            {
+                doubleJump = false;
                 // Add a vertical force to the player.
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+                if (m_Rigidbody2D.velocity.y > 1) {
+                    m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 1);
+                }
             }
+            if (m_Grounded && !doubleJump)
+            {
+                doubleJump = true;
+            }
+
             else 
             if (jump && Physics2D.OverlapCircle(m_WallCheck.position, k_WallRadius, m_WhatIsGround))
             {
-                m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+                //m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             }
         }
 

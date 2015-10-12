@@ -47,12 +47,33 @@ public class Energy : MonoBehaviour {
             //min and max energy
             if (energy < 0)
             {
+                Time.timeScale = 0.0f;
                 energy = 0;
             } else if(energy > 100)
             {
                 energy = 100;
             }
 
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            energy -= Time.deltaTime * rangeDecrease * 6;
+        }
+    }
+
+    void OnGUI()
+    {
+        if (energy <= 0)
+        {
+            if ( GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 50), "GAME OVER!"))
+            {
+                Time.timeScale = 1.0f;
+                Application.LoadLevel(Application.loadedLevel);
+            }
         }
     }
 }
