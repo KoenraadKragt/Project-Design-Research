@@ -1,0 +1,5 @@
+LightMode: Kinetic
+Goal is reached
+
+Time: 0:08
+Risicovol gedrag is 6.2 van de 8.9 seconden
