@@ -1,5 +1,0 @@
-LightMode: Constant
-Goal is reached
-
-Time: 0:42
-Risicovol gedrag is 21.0 van de 42.4 seconden

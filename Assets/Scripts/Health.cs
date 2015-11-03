@@ -91,8 +91,8 @@ public class Health : MonoBehaviour {
 
     public void Death()
     {
-        Time.timeScale = 0.0f;
         gameObject.SendMessage("WriteFile", false, SendMessageOptions.DontRequireReceiver);
+		Application.LoadLevel(0);
     }
 
 

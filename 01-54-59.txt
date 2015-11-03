@@ -1,5 +1,0 @@
-LightMode: Rechargeable
-Player has died
-
-Time: 0:17
-Risicovol gedrag is 10.2 van de 17.8 seconden

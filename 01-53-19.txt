@@ -1,5 +1,0 @@
-LightMode: Rechargeable
-Goal is reached
-
-Time: 0:09
-Risicovol gedrag is 0.0 van de 9.0 seconden

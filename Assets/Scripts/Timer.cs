@@ -34,7 +34,7 @@ public class Timer : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 50), "You found the Solar Artifact!"))
             {
                 Time.timeScale = 1.0f;
-                Application.LoadLevel(Application.loadedLevel);
+                Application.LoadLevel(0);
             }
         }
     }
