@@ -19,7 +19,7 @@ public class Slash : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        print("collision");
+        //print("collision");
         if (other.gameObject.tag == "Enemy")
         {
             other.SendMessage("TakeDamage", dmg);

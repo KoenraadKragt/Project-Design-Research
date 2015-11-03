@@ -20,18 +20,18 @@ public class PlayerAttack : MonoBehaviour {
         {
             left = true;
             right = false;
-            print ("going left");
+            //print ("going left");
         }
         else if (Input.GetKeyDown("right"))
         {
             right = true;
             left = false;
-            print ("going right");
+            //print ("going right");
         }
 
         if(Input.GetKeyDown(KeyCode.Z) && cooldown == false)
         {            
-            print("attacking");
+            //print("attacking");
             if(left == true && right == false)
             {
                 Instantiate(attack, transform.position - (new Vector3(0.7f, 0, 0)), new Quaternion(0f, 0f, 0f, 0f));
@@ -46,7 +46,7 @@ public class PlayerAttack : MonoBehaviour {
 
     private IEnumerator Wait()
     {
-        print("wait");
+        //print("wait");
         cooldown = true;
         yield return new WaitForSeconds(.3f);
         cooldown = false;
