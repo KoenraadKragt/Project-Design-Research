@@ -7,9 +7,14 @@ public class EnemyBehaviour : MonoBehaviour {
     public float speed;
     public float rotationSpeed;
     public float range = 10;
-    private Timer riskTimer;
 
-    public int health = 2;
+    private Timer riskTimer;
+    private bool hasChased = false;
+
+    public float health;
+    private float iFrameTimer;
+    private bool invulnerable;
+    public float iFrameDuration = 0.5f;
 
     void Awake()
     {
@@ -27,16 +32,38 @@ public class EnemyBehaviour : MonoBehaviour {
         {
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
 
-            if(riskTimer.currentMode == Energy.lightMode.Constant)
+
+            if (!hasChased)
             {
-                riskTimer.riskValue += Time.deltaTime;
+                riskTimer.enemyCount++;
+                hasChased = true;
             }
+            riskTimer.isEnemyNear = true;
+        } else if(hasChased)
+        {
+            riskTimer.isEnemyNear = false;
         }
 
-        if(health <= 0)
+        if (playerPos.x - transform.position.x >= 0)
         {
-            Destroy(this.gameObject);
+            transform.localScale = new Vector3(-transform.localScale.y, transform.localScale.y, 1);
+        } else
+        {
+            transform.localScale = new Vector3(transform.localScale.y, transform.localScale.y, 1);
         }
+
+
+        //moment if invulnerability after being hit
+        if (iFrameTimer > 0)
+        {
+            invulnerable = true;
+            iFrameTimer -= Time.deltaTime;
+
+
+        } else {
+            invulnerable = false;
+        }
+        
     }
 
     void OnCollisionStay2D(Collision2D other)
@@ -49,6 +76,20 @@ public class EnemyBehaviour : MonoBehaviour {
 
     public void TakeDamage(float amount)
     {
-        health -= (int)amount;
+        if (invulnerable)
+        {
+            return;
+        }
+
+        health -= amount;
+
+        iFrameTimer = iFrameDuration;
+        invulnerable = true;
+
+        if (health <= 0)
+        {
+            riskTimer.isEnemyNear = false;
+            Destroy(this.gameObject);
+        }
     }
 }

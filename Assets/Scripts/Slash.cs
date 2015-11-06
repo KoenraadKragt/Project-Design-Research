@@ -4,13 +4,11 @@ using System.Collections;
 public class Slash : MonoBehaviour
 {
 
-    public int dmg = 1;
-    private GameObject enemy;
+    public float dmg = 1;
     private GameObject player;
 
     void Start()
     {
-        enemy = GameObject.FindGameObjectWithTag("Enemy");
         player = GameObject.FindGameObjectWithTag("Player");
 
         Destroy(this.gameObject, 0.3f);
@@ -19,17 +17,16 @@ public class Slash : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //print("collision");
         if (other.gameObject.tag == "Enemy")
         {
-            other.SendMessage("TakeDamage", dmg);
+            other.SendMessage("TakeDamage", dmg, SendMessageOptions.DontRequireReceiver);
         }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         this.transform.parent = player.transform;
+        this.transform.position = transform.parent.position;
     }
 }
     

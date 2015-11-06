@@ -28,7 +28,8 @@ public class Energy : MonoBehaviour {
                 break;
             case "Level 2":
                 currentMode = lightMode.Rechargeable;
-                modifier = -1.0f;
+                modifier = -3.0f;
+                rangeDecrease = 20;
                 break;
             case "Level 3":
                 currentMode = lightMode.Constant;
@@ -45,14 +46,23 @@ public class Energy : MonoBehaviour {
         if (currentMode != lightMode.Constant)
         {
             KineticUpdate();
-        }
-        if ((energy < 25 || energy > 85) && currentMode == lightMode.Kinetic)
+        } else
         {
-            riskTimer.riskValue += Time.deltaTime;
+            if( GetComponent<Rigidbody2D>().velocity.magnitude > 0.1)
+            {
+                riskTimer.moving += Time.deltaTime;
+            }
         }
-        if (currentMode == lightMode.Rechargeable && (energy < 25))
+
+
+        //risk meten
+        if ((energy > 85))
         {
-            riskTimer.riskValue += Time.deltaTime;
+            riskTimer.energyHigh += Time.deltaTime;
+        }
+        if ((energy < 25))
+        {
+            riskTimer.energyLow += Time.deltaTime;
         }
     }
     
@@ -86,6 +96,10 @@ public class Energy : MonoBehaviour {
         {
             change = -Time.deltaTime * movement * modifier;
             energy -= change;
+
+
+            //risk meten
+            riskTimer.moving += Time.deltaTime;
         }
         else
         {
@@ -105,9 +119,9 @@ public class Energy : MonoBehaviour {
         {
             lightSuit.intensity = 1.2f;
         }
-        else if (lightSuit.intensity < 0.6f)
+        else if (lightSuit.intensity < 0.9f)
         {
-            lightSuit.intensity = 0.6f;
+            lightSuit.intensity = 0.9f;
         }
     }
     
