@@ -4,14 +4,17 @@ using System.Collections;
 public class Slash : MonoBehaviour
 {
 
-    public float dmg = 1;
+    float dmg;
+    public float lifespan = 0.3f;
     private GameObject player;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
-        Destroy(this.gameObject, 0.3f);
+        dmg = player.GetComponent<PlayerAttack>().getDamage();
+
+        Destroy(this.gameObject, lifespan);
     }
 
 

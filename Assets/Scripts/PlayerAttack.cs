@@ -1,30 +1,48 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerAttack : MonoBehaviour {
 
     public GameObject attack;
-    bool left = false;
     bool cooldown = false;
+    public float startingDamage = 1;
+    float damage;
 
+    float boostTimer = 0;
+    float boostDuration = 10;
+
+    public Slider powerSlider;
 
     Quaternion rotation = Quaternion.identity;
-    Vector3 position = Vector3.zero;
     Vector3 scale = Vector3.zero;
+
+    void Start()
+    {
+        damage = startingDamage;
+    }
 
     void Update() {
 
+        if (boostTimer > 0)
+        {
+            boostTimer -= Time.deltaTime;
 
-        if (Input.GetAxis("Horizontal") < 0)
+            if(!powerSlider.IsActive())
+            {
+                powerSlider.gameObject.SetActive(true);
+            }
+
+            powerSlider.value = boostTimer / boostDuration;
+        } else
         {
-            left = true;
-            position = transform.position + new Vector3(-0.7f, 0, 0);
+            damage = startingDamage;
+            if (powerSlider.IsActive())
+            {
+                powerSlider.gameObject.SetActive(false);
+            }
         }
-        else if (Input.GetAxis("Horizontal") > 0 )
-        {
-            left = false;
-            position = transform.position + new Vector3(0.7f, 0, 0);
-        }
+
 
         if(Input.GetKeyDown(KeyCode.Z) && cooldown == false)
         {
@@ -45,5 +63,18 @@ public class PlayerAttack : MonoBehaviour {
         cooldown = true;
         yield return new WaitForSeconds(.3f);
         cooldown = false;
+    }
+
+    public float getDamage()
+    {
+        return damage;
+    }
+    public void PowerBoost(float _damage)
+    {
+        boostTimer = boostDuration;
+
+        powerSlider.value = boostTimer / boostDuration;
+
+        damage = _damage;
     }
 }

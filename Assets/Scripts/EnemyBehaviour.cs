@@ -89,6 +89,8 @@ public class EnemyBehaviour : MonoBehaviour {
         if (health <= 0)
         {
             riskTimer.isEnemyNear = false;
+
+            GameObject.FindGameObjectWithTag("GameManager").SendMessage("ExperienceGained", 20, SendMessageOptions.DontRequireReceiver);
             Destroy(this.gameObject);
         }
     }

@@ -10,7 +10,7 @@ public class Health : MonoBehaviour {
     private float HP;
     private float iFrameTimer;
     private bool invulnerable;
-    public float iFrameDuration = 0.5f;
+    private float iFrameDuration = 0.5f;
     public Slider healthSlider;
 
     void Awake()
@@ -22,8 +22,6 @@ public class Health : MonoBehaviour {
 
     void Update()
     {
-
-
         //moment if invulnerability after being hit
         if (iFrameTimer > 0)
         {
@@ -42,14 +40,11 @@ public class Health : MonoBehaviour {
             return;
         }
 
+		this.SendMessage("OnHit",iFrameDuration,SendMessageOptions.DontRequireReceiver);
         HP -= amount;
         playerEnergy.energy -= amount;
 
-        // Set the health bar's value to the current health.
         healthSlider.value = HP;
-
-        //update UI bar
-        //UI flash screen
 
         iFrameTimer = iFrameDuration;
 
@@ -63,7 +58,6 @@ public class Health : MonoBehaviour {
     {
         HP -= amount;
 
-        //update UI bar
         healthSlider.value = HP;
 
         if (HP <= 0)
@@ -75,19 +69,6 @@ public class Health : MonoBehaviour {
     public void Death()
     {
         gameObject.SendMessage("WriteFile", false, SendMessageOptions.DontRequireReceiver);
-		Application.LoadLevel(0);
-    }
-
-
-    void OnGUI()
-    {
-        if (HP <= 0)
-        {
-            if (GUI.Button(new Rect(Screen.width / 2 - 250, Screen.height / 2, 500, 50), "GAME OVER!"))
-            {
-                Time.timeScale = 1.0f;
-                Application.LoadLevel(Application.loadedLevel);
-            }
-        }
+        GameObject.FindGameObjectWithTag("GameManager").SendMessage("Death", SendMessageOptions.DontRequireReceiver);
     }
 }
