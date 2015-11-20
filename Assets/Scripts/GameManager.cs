@@ -87,12 +87,12 @@ public class GameManager : MonoBehaviour {
     {
         if (!permaDeath)
         {
-            int positionX = 10;
+            int positionX = Screen.width - 300;
             int i = 0;
 
             while (i < lives)
             {
-                GUI.DrawTexture(new Rect(positionX, 10, 60, 60), heartImage, ScaleMode.ScaleToFit, true, 10.0F);
+                GUI.DrawTexture(new Rect(positionX, 10, 60, 60), heartImage, ScaleMode.StretchToFill, true, 10.0F);
                 positionX += 80;
                 i++;
             }

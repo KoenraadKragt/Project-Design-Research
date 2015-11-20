@@ -9,6 +9,7 @@ public class Portal : MonoBehaviour {
 
     void Awake()
     {
+        Debug.Log(Application.levelCount);
         portalTarget = GameObject.FindGameObjectWithTag("PortalTarget").transform.position;
     }
 
@@ -17,14 +18,13 @@ public class Portal : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
 
-            if (Application.loadedLevel == finalLevel)
+            if (Application.loadedLevel < Application.levelCount-1)
             {
-                other.gameObject.transform.position = portalTarget;
+                Application.LoadLevel(Application.loadedLevel + 1);
             }
             else
             {
-                Application.LoadLevel(Application.loadedLevel + 1);
-
+                other.gameObject.transform.position = portalTarget;
             }
 
         }

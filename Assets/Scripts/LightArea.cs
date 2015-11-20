@@ -15,12 +15,17 @@ public class LightArea : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            Debug.Log("Light enter");
             riskTimer.EnterTheLight(true);
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        riskTimer.EnterTheLight(false);
+        if (other.tag == "Player")
+        {
+            Debug.Log("Light exit");
+            riskTimer.EnterTheLight(false);
+        }
     }
 }

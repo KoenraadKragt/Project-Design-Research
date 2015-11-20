@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour {
     public float moving;
     public int enemyCount = 0;
 
-    bool isInLight;
+    bool isInLight = true;
     float lightTimer = 0;
     float xp = 0;
 
