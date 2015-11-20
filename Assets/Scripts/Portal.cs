@@ -5,6 +5,8 @@ public class Portal : MonoBehaviour {
 
     private Vector3 portalTarget;
 
+    public int finalLevel = 5;
+
     void Awake()
     {
         portalTarget = GameObject.FindGameObjectWithTag("PortalTarget").transform.position;
@@ -14,7 +16,17 @@ public class Portal : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.transform.position = portalTarget;
+
+            if (Application.loadedLevel == finalLevel)
+            {
+                other.gameObject.transform.position = portalTarget;
+            }
+            else
+            {
+                Application.LoadLevel(Application.loadedLevel + 1);
+
+            }
+
         }
     }
 }

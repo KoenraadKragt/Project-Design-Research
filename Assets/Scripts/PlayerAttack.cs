@@ -12,14 +12,17 @@ public class PlayerAttack : MonoBehaviour {
     float boostTimer = 0;
     float boostDuration = 10;
 
-    public Slider powerSlider;
+    private Slider powerSlider;
 
     Quaternion rotation = Quaternion.identity;
     Vector3 scale = Vector3.zero;
 
-    void Start()
+    void Awake()
     {
         damage = startingDamage;
+
+
+        powerSlider = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().powerSlider;
     }
 
     void Update() {

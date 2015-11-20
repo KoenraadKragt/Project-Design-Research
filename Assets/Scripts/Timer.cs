@@ -19,6 +19,11 @@ public class Timer : MonoBehaviour {
     public float moving;
     public int enemyCount = 0;
 
+    bool isInLight;
+    float lightTimer = 0;
+    float xp = 0;
+
+    private string deathType;
 
     bool isFinished = false;
     public Energy.lightMode currentMode;
@@ -30,8 +35,32 @@ public class Timer : MonoBehaviour {
         {
             enemyNear += Time.deltaTime;
         }
+        if (isInLight)
+        {
+            lightTimer += Time.deltaTime;
+        }
 	}
 
+    public void DeathType(bool isPerma)
+    {
+        if (isPerma)
+        {
+            deathType = "_PermaDeath";
+        } else {
+            deathType = "_Lives";
+        }
+    }
+
+    public void EnterTheLight(bool _isInLight)
+    {
+        isInLight = _isInLight;
+    }
+
+    public void Experience(float totalXP)
+    {
+        xp = totalXP;
+    }
+    /*
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Solar")
@@ -52,12 +81,14 @@ public class Timer : MonoBehaviour {
                 Application.LoadLevel(0);
             }
         }
-    }
+    
 
-    private void WriteFile(bool reachedGoal)
+}
+*/
+    private void WriteFile(int lives)
     {
         currentTime = System.DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss");
-        fileName = currentTime + ".txt";
+        fileName = deathType + "_" + currentTime + ".txt";
 
         timerMin = (int)(timer - (timer % 60)) / 60;
         timerSec = ((int)timer) % 60;
@@ -73,7 +104,7 @@ public class Timer : MonoBehaviour {
 
         write.WriteLine("LightMode: " + currentMode.ToString());
 
-        if (reachedGoal)
+        if (lives > 0)
         {
             write.WriteLine("Goal is reached");
         }else
@@ -98,6 +129,14 @@ public class Timer : MonoBehaviour {
 
 
         write.WriteLine("Player has encountered:\t" + enemyCount + " enemies");
+
+
+        write.WriteLine("Time spent in lighted area:\t" + lightTimer);
+
+        write.WriteLine("Lives Remaining:\t" + lives);
+        write.WriteLine("Experience gained:\t" + xp);
+
+
 
         write.Close();
         //#######################################################################################

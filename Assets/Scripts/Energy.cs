@@ -18,25 +18,10 @@ public class Energy : MonoBehaviour {
     void Awake () {
         energy = 100;
 
-        riskTimer = GetComponent<Timer>();
+        riskTimer = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Timer>();
 
-        switch (Application.loadedLevelName)
-        {
-            case "Level 1":
-                currentMode = lightMode.Kinetic;
-                modifier = 1.0f;
-                break;
-            case "Level 2":
-                currentMode = lightMode.Rechargeable;
-                modifier = -3.0f;
-                rangeDecrease = 20;
-                break;
-            case "Level 3":
-                currentMode = lightMode.Constant;
-                modifier = 0.0f;
-                GetComponent<EnergyGUI>().enabled = false;
-                break;
-        }
+        currentMode = lightMode.Kinetic;
+        modifier = 1.0f;
 
         riskTimer.SetLightMode(currentMode);
 	}

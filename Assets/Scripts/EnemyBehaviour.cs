@@ -15,11 +15,14 @@ public class EnemyBehaviour : MonoBehaviour {
     private float iFrameTimer;
     private bool invulnerable;
     public float iFrameDuration = 0.5f;
+    public float damage = 20;
+
+    public float xpReward;
 
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        riskTimer = player.GetComponent<Timer>();
+        riskTimer = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Timer>();
     }
 
 	void Update () {
@@ -70,7 +73,7 @@ public class EnemyBehaviour : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.SendMessage("TakeDamage", 20, SendMessageOptions.DontRequireReceiver);
+            other.gameObject.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -90,7 +93,7 @@ public class EnemyBehaviour : MonoBehaviour {
         {
             riskTimer.isEnemyNear = false;
 
-            GameObject.FindGameObjectWithTag("GameManager").SendMessage("ExperienceGained", 20, SendMessageOptions.DontRequireReceiver);
+            GameObject.FindGameObjectWithTag("GameManager").SendMessage("ExperienceGained", xpReward, SendMessageOptions.DontRequireReceiver);
             Destroy(this.gameObject);
         }
     }
