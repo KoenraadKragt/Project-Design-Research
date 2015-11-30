@@ -10,6 +10,12 @@ public class Portal : MonoBehaviour {
     void Awake()
     {
         Debug.Log(Application.levelCount);
+
+        if(GameObject.FindGameObjectWithTag("PortalTarget") == null)
+        {
+            Debug.Log("No target for the portal.");
+            return;
+        }
         portalTarget = GameObject.FindGameObjectWithTag("PortalTarget").transform.position;
     }
 

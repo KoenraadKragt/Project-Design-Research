@@ -47,7 +47,9 @@ public class Health : MonoBehaviour {
             return;
         }
 
-		this.SendMessage("OnHit",iFrameDuration,SendMessageOptions.DontRequireReceiver);
+        invulnerable = true;
+
+        this.SendMessage("OnHit",iFrameDuration,SendMessageOptions.DontRequireReceiver);
         HP -= amount;
         playerEnergy.energy -= amount;
 
