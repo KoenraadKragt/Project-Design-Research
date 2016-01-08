@@ -14,9 +14,10 @@ public class GameManager : MonoBehaviour {
     private Slider experienceSlider;
     private Text playerLevelText;
     private GameObject playerManager; 
+	private AudioSource lvlUpSound;
 
     public bool permaDeath = false;
-
+    public bool delayedLevelUp = false;
 
     private Timer riskTimer;
 
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour {
     {
         heartImage = Resources.Load("Heart") as Texture;
 
+		lvlUpSound = gameObject.GetComponent<AudioSource>();
         experienceSlider = GameObject.FindGameObjectWithTag("ExperienceSlider").GetComponent<Slider>();
         playerLevelText = GameObject.FindGameObjectWithTag("PlayerLevel").GetComponent<Text>();
         powerSlider = GameObject.FindGameObjectWithTag("PowerSlider").GetComponent<Slider>();
@@ -54,6 +56,7 @@ public class GameManager : MonoBehaviour {
             playerLevelText.text = playerLevel.ToString();
 
             playerManager.SendMessage("LevelUp", playerLevel, SendMessageOptions.DontRequireReceiver);
+			lvlUpSound.Play ();
             this.gameObject.SendMessage("LevelUp", playerLevel, SendMessageOptions.DontRequireReceiver);
 
         }

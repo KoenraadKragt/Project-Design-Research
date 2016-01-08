@@ -13,11 +13,19 @@ public class PlayerManager : MonoBehaviour {
 
 	string[] upgradeTitle;
 
+    bool delayedLevelUp;
+
+    void Awake()
+    {
+        delayedLevelUp = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().delayedLevelUp;
+    }
+
 	void Update () {
 		// For Testing Only
-		if (Input.GetKeyDown("h") && unspentPoints > 0) {
+		if (!delayedLevelUp && unspentPoints > 0) {
 			if(timeRunning){
 				StartCoroutine(FadeOut());
+                timeRunning = false;
 			}
 		}
 	}
@@ -53,13 +61,13 @@ public class PlayerManager : MonoBehaviour {
 		if (Time.timeScale > 0.1f) {
 			Time.timeScale -= 0.1f;
 			StartCoroutine (FadeOut ());
+            Debug.Log("Timescale is going down");
 		} else {
 			Time.timeScale = 0.0f;
+            Debug.Log("Timescale is 0");
 			levelUpEnabled  = true;
-			timeRunning = false;
-
 		}
-	}
+    }
 
 	void LevelUp(){
 		unspentPoints  += 1;
@@ -75,4 +83,12 @@ public class PlayerManager : MonoBehaviour {
 			timeRunning = true;
 		}
 	}
+
+    public void PortalReached()
+    {
+        if (delayedLevelUp && unspentPoints > 0)
+        {
+            levelUpEnabled = true;            
+        }
+    }
 }

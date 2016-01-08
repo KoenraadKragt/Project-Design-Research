@@ -15,7 +15,6 @@ public class LightArea : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            Debug.Log("Light enter");
             riskTimer.EnterTheLight(true);
         }
     }
@@ -24,7 +23,6 @@ public class LightArea : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            Debug.Log("Light exit");
             riskTimer.EnterTheLight(false);
         }
     }

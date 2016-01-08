@@ -16,12 +16,16 @@ public class EnemyBehaviour : MonoBehaviour {
     private bool invulnerable;
     public float iFrameDuration = 0.5f;
     public float damage = 20;
+	public bool flying;
+
+	private GameObject soundManager;
 
     public float xpReward;
 
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+		soundManager = GameObject.FindGameObjectWithTag("SoundManager");
+		player = GameObject.FindGameObjectWithTag("Player");
         riskTimer = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Timer>();
     }
 
@@ -33,9 +37,12 @@ public class EnemyBehaviour : MonoBehaviour {
         
         if(Vector3.Distance(transform.position, playerPos) < range)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-
-
+			if(flying){
+	            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+			} else {
+				Vector3 targetPos = new Vector3(player.transform.position.x,transform.position.y,player.transform.position.z);
+				transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+			}
             if (!hasChased)
             {
                 riskTimer.enemyCount++;
@@ -84,6 +91,8 @@ public class EnemyBehaviour : MonoBehaviour {
             return;
         }
 
+		soundManager.SendMessage("SetAudio",0,SendMessageOptions.DontRequireReceiver);
+
         health -= amount;
 
         iFrameTimer = iFrameDuration;
@@ -92,7 +101,6 @@ public class EnemyBehaviour : MonoBehaviour {
         if (health <= 0)
         {
             riskTimer.isEnemyNear = false;
-
             GameObject.FindGameObjectWithTag("GameManager").SendMessage("ExperienceGained", xpReward, SendMessageOptions.DontRequireReceiver);
             Destroy(this.gameObject);
         }
