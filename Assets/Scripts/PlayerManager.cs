@@ -58,7 +58,7 @@ public class PlayerManager : MonoBehaviour {
                 unspentPoints -=1;
 			}
 
-			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6 * 5,buttonLength,Screen.height/6),"Upgrade 3")){
+			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6 * 5,buttonLength,Screen.height/6),"Attack Range")){
                 atkScalar += 0.1f;
 
                 GameObject.FindGameObjectWithTag("Player").SendMessage("AttackRange", atkScalar, SendMessageOptions.DontRequireReceiver);

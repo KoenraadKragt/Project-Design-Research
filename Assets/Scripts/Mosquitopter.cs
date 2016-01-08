@@ -12,12 +12,12 @@ public class Mosquitopter : MonoBehaviour {
 
 	public void TakeDamage(float amount)
     {
-        if(hitpoints <= 2){
+        if(hitpoints <= 1){
 			eye.enabled = false;
         	this.enabled = false;
 		} else {
 			hitpoints = GetComponent<EnemyBehaviour>().health;
-			eye.intensity = 2 - 2/(hitpoints - 1);
+			eye.intensity = 2 - 2/(hitpoints);
 		}
     }
 }
