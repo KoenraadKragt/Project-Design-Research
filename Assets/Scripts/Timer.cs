@@ -23,7 +23,10 @@ public class Timer : MonoBehaviour {
     float lightTimer = 0;
     float xp = 0;
 
+    ArrayList levelUpTimer = new ArrayList();
+
     private string deathType;
+    private string rewardType;
 
     bool isFinished = false;
     public Energy.lightMode currentMode;
@@ -60,6 +63,17 @@ public class Timer : MonoBehaviour {
     {
         xp = totalXP;
     }
+
+    public void LevelUp(int playerLevel)
+    {
+        string value = "Level " + playerLevel + 
+            " || second "+timer.ToString("F1") + " || map: " + Application.loadedLevel;
+        
+        
+
+        levelUpTimer.Add(value);
+
+    }
     /*
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -88,7 +102,7 @@ public class Timer : MonoBehaviour {
     private void WriteFile(int lives)
     {
         currentTime = System.DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss");
-        fileName = deathType + "_" + currentTime + ".txt";
+        fileName = rewardType + "_" + currentTime + ".txt";
 
         timerMin = (int)(timer - (timer % 60)) / 60;
         timerSec = ((int)timer) % 60;
@@ -122,21 +136,26 @@ public class Timer : MonoBehaviour {
         }
 
         write.WriteLine("\nCompletion Time:\t" + timer.ToString("F1") + " seconden");
-        write.WriteLine("Time near enemy:\t" + enemyNear.ToString("F1") + " seconden");
         write.WriteLine("Time low energy:\t" + energyLow.ToString("F1") + " seconden");
         write.WriteLine("Time high energy:\t" + energyHigh.ToString("F1") + " seconden");
         write.WriteLine("Time spent moving:\t" + moving.ToString("F1") + " seconden");
-
-
-        write.WriteLine("Player has encountered:\t" + enemyCount + " enemies");
-
-
         write.WriteLine("Time spent in lighted area:\t" + lightTimer);
+
+
+        write.WriteLine("\nPlayer has encountered:\t" + enemyCount + " enemies");
+        write.WriteLine("Time near enemy:\t" + enemyNear.ToString("F1") + " seconden");
+
+
 
         write.WriteLine("Lives Remaining:\t" + lives);
         write.WriteLine("Experience gained:\t" + xp);
 
+        write.WriteLine("Finished at map:\t" + Application.loadedLevel);
 
+        for(int i = 0; i < levelUpTimer.Count; i++)
+        {
+            write.WriteLine( levelUpTimer[i] );
+        }
 
         write.Close();
         //#######################################################################################

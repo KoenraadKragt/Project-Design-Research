@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     private int playerLevel = 1;
     private Slider experienceSlider;
     private Text playerLevelText;
+    private GameObject playerManager; 
 
     public bool permaDeath = false;
 
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour {
         experienceSlider = GameObject.FindGameObjectWithTag("ExperienceSlider").GetComponent<Slider>();
         playerLevelText = GameObject.FindGameObjectWithTag("PlayerLevel").GetComponent<Text>();
         powerSlider = GameObject.FindGameObjectWithTag("PowerSlider").GetComponent<Slider>();
+        playerManager = GameObject.FindGameObjectWithTag("PlayerManager");
 
         if (permaDeath)
         {
@@ -50,6 +52,10 @@ public class GameManager : MonoBehaviour {
             experienceSlider.maxValue = 100 + ((playerLevel * playerLevel) *  10);
             playerLevel += 1;
             playerLevelText.text = playerLevel.ToString();
+
+            playerManager.SendMessage("LevelUp", playerLevel, SendMessageOptions.DontRequireReceiver);
+            this.gameObject.SendMessage("LevelUp", playerLevel, SendMessageOptions.DontRequireReceiver);
+
         }
         experienceSlider.value = currentXP;
     }
@@ -77,7 +83,7 @@ public class GameManager : MonoBehaviour {
 
     public void ReachedGoal()
     {
-
+        
         this.gameObject.SendMessage("Experience", totalExperience, SendMessageOptions.DontRequireReceiver);
         this.gameObject.SendMessage("WriteFile", lives, SendMessageOptions.DontRequireReceiver);
         Application.LoadLevel(0);
