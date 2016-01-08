@@ -15,8 +15,15 @@ public class PlayerManager : MonoBehaviour {
 
     bool delayedLevelUp;
 
+    public float movementSpeed;
+    public float brightness;
+    public float atkScalar;
+
     void Awake()
     {
+        movementSpeed = 10;
+        brightness = 10;
+        atkScalar = 0.6f;
         delayedLevelUp = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().delayedLevelUp;
     }
 
@@ -38,16 +45,24 @@ public class PlayerManager : MonoBehaviour {
 			centeredStyle.fontSize = 24;
 			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),background,ScaleMode.StretchToFill,true,10.0f);
 			GUI.Label (new Rect(Screen.width/2 - buttonLength/2, Screen.height/8 - Screen.height/16,buttonLength,Screen.height/8),"Unspent Skillpoints: " + unspentPoints);
-			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6,buttonLength,Screen.height/6),"Upgrade 1")){
+			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6,buttonLength,Screen.height/6),"Movement Speed")){
+                movementSpeed += 1;
+                GameObject.FindGameObjectWithTag("Player").SendMessage("MovementUp",movementSpeed , SendMessageOptions.DontRequireReceiver);
 				unspentPoints-=1;
 			}
 
-			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6 * 3,buttonLength,Screen.height/6),"Upgrade 2")){
-				unspentPoints-=1;
+			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6 * 3,buttonLength,Screen.height/6),"Increase Light")){
+                brightness -= 2;
+                if (brightness == 0) { brightness += 0.1f; }
+                GameObject.FindGameObjectWithTag("Player").SendMessage("BrigtUp", brightness, SendMessageOptions.DontRequireReceiver);
+                unspentPoints -=1;
 			}
 
 			if(GUI.Button(new Rect(Screen.width/2 - buttonLength/2,Screen.height/6 * 5,buttonLength,Screen.height/6),"Upgrade 3")){
-				unspentPoints-=1;
+                atkScalar += 0.1f;
+
+                GameObject.FindGameObjectWithTag("Player").SendMessage("AttackRange", atkScalar, SendMessageOptions.DontRequireReceiver);
+                unspentPoints -=1;
 			}
 			if(unspentPoints <= 0){
 				StartCoroutine(FadeIn());

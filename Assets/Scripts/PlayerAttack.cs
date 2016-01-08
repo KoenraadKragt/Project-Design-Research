@@ -17,8 +17,12 @@ public class PlayerAttack : MonoBehaviour {
     Quaternion rotation = Quaternion.identity;
     Vector3 scale = Vector3.zero;
 
+    float atkScalar;
+
     void Awake()
     {
+        atkScalar = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerManager>().atkScalar;
+
         damage = startingDamage;
 
 
@@ -52,7 +56,7 @@ public class PlayerAttack : MonoBehaviour {
            
             rotation = transform.rotation;
             
-            scale = transform.localScale * 0.6f;
+            scale = transform.localScale * atkScalar;
 
             GameObject clone = (GameObject)Instantiate(attack, transform.position, rotation);
             clone.transform.localScale = scale;
@@ -60,6 +64,11 @@ public class PlayerAttack : MonoBehaviour {
             StartCoroutine(Wait());
         }
 	}
+
+    public void AttackRange(float scalar)
+    {
+        atkScalar = scalar;
+    }
 
     private IEnumerator Wait()
     {

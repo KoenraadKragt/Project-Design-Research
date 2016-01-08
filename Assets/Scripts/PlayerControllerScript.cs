@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerControllerScript : MonoBehaviour {
 
-    public float maxSpeed = 10;
+    float maxSpeed = 10;
     public float jumpForce = 400f;
     bool facingRight = true;
 
@@ -17,10 +17,12 @@ public class PlayerControllerScript : MonoBehaviour {
 
     bool doubleJump = false;
 
-    void Start()
+    void Awake()
     {
         anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
+
+        maxSpeed = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerManager>().movementSpeed;
     }
 
 	void FixedUpdate ()
@@ -68,5 +70,10 @@ public class PlayerControllerScript : MonoBehaviour {
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    public void MovementUp(float x)
+    {
+        maxSpeed = x;
     }
 }

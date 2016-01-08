@@ -14,8 +14,12 @@ public class Energy : MonoBehaviour {
 
     public enum lightMode {Kinetic, Rechargeable, Constant};
     public lightMode currentMode = lightMode.Kinetic;
-    
+
+    public float brightPower;
+
     void Awake () {
+
+        brightPower = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerManager>().brightness;
         energy = 100;
 
         riskTimer = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Timer>();
@@ -25,8 +29,13 @@ public class Energy : MonoBehaviour {
 
         riskTimer.SetLightMode(currentMode);
 	}
-	
-	void Update () {
+
+    public void BrigtUp(float x)
+    {
+        brightPower = x;
+    }
+
+    void Update () {
 
         if (currentMode != lightMode.Constant)
         {
@@ -97,7 +106,7 @@ public class Energy : MonoBehaviour {
         }
 
         lightSuit.intensity = energy / 100;
-        lightSuit.range = energy / 10;
+        lightSuit.range = energy / brightPower;
 
         //min and max light intensity
         if (lightSuit.intensity > 1.2f)
